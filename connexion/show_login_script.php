@@ -3,6 +3,7 @@
 
 $vulnerable_code = <<<EOD
 <?php
+// vulnerable_login.php : exemple d'injection SQL
 
 include 'db.php';
 
@@ -63,12 +64,35 @@ if (\$_SERVER["REQUEST_METHOD"] == "POST") {
 
                         <div class="card-footer text-center">
                             <a href="../index.html" class="btn btn-primary">Retour à l'accueil</a>
+                            <a href="show_login_script.php" class="btn btn-info">Voir le Script de login</a>
                         </div>
                     </div>
                 </div>
                 <p class="text-center text-muted mt-3">
                     <small>Exemple d'injection SQL - À des fins éducatives uniquement.</small>
                 </p>
+
+                <br><br>
+
+                <!-- Zone de contenu dynamique (écrire quelque chose ici) -->
+                <div class="card mt-4">
+                    <div class="card-header bg-warning text-white">
+                        <h5>Les tests : </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <strong>1er test :</strong> Pour le premier test, nous pouvons mettre dans le Nom d'utilisateur : <code>admin' ;--</code> et dans le Mot de passe : (n'importe quoi car le mot de passe ne sera pas pris en compte). 
+                            <br><br>
+                            <strong>Résultat :</strong><br> <code>SELECT * FROM users WHERE username = '\$username' AND password = '\$password';</code> <br><br> <code>SELECT * FROM users WHERE username = 'admin' ;--' AND password = '';</code>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong>2e test :</strong> Pour le deuxième test, nous pouvons mettre dans le Nom d'utilisateur : <code>admin' OR '1'='1</code> et dans le Mot de passe : (n'importe quoi car le mot de passe ne sera pas pris en compte).
+                            <br><br>
+                            <strong>Résultat :</strong><br> <code>SELECT * FROM users WHERE username = '\$username' AND password = '\$password';</code> <br><br> <code>SELECT * FROM users WHERE username = 'admin' OR '1'='1' AND password = '';</code> <br><br> <code>SELECT * FROM users WHERE (username = 'admin') OR ('1'='1' AND password = '');</code>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -77,6 +101,7 @@ if (\$_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 EOD;
 ?>
 

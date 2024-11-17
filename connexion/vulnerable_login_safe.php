@@ -1,16 +1,5 @@
 <?php
 // safe_login.php : version sécurisée du script de connexion
-// http://localhost:8000/connexion/vulnerable_login_safe.php
-
-// admin
-// admin123
-
-// user1
-// password1
-
-// 2 tests : 
-// admin' ;--
-// admin' OR '1'='1
 
 include 'db.php';
 
@@ -95,11 +84,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="card-body">
                         <div class="alert alert-info">
-                            <strong>1er test :</strong> Pour le premier test, nous pouvons mettre dans le Nom d'utilisateur : <code>admin' ;--</code> et dans le Mot de passe : (n'importe quoi car le mot de passe ne sera pas pris en compte).
+                            <strong>1er test :</strong> Pour le premier test, nous pouvons mettre dans le Nom d'utilisateur : <code>admin' ;--</code>
+                            <br><br>
+                            <strong>Résultat :</strong><br> <code>SELECT * FROM users WHERE username = '$username' AND password = '$password';</code> <br><br> <code>SELECT * FROM users WHERE username = 'admin' ;--' AND password = '';</code>
                         </div>
-
                         <div class="alert alert-info">
-                            <strong>2e test :</strong> Pour le deuxième test, nous pouvons mettre dans le Nom d'utilisateur : <code>admin' OR '1'='1</code> et dans le Mot de passe : (n'importe quoi car le mot de passe ne sera pas pris en compte).
+                            <strong>2e test :</strong> Pour le deuxième test, nous pouvons mettre dans le Nom d'utilisateur : <code>admin' OR '1'='1</code>
+                            <br><br>
+                            <strong>Résultat :</strong><br> <code>SELECT * FROM users WHERE username = '$username' AND password = '$password';</code> <br><br> <code>SELECT * FROM users WHERE username = 'admin' OR '1'='1' AND password = '';</code> <br><br> <code>SELECT * FROM users WHERE username = '(admin' OR '1'='1)' AND password = '';</code>
                         </div>
                     </div>
                 </div>
